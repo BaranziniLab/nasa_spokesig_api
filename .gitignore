@@ -1,4 +1,3 @@
 *.ipynb
 config.ini
 venv/
-.nasa_spokesig_api.conf
