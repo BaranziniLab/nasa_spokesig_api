@@ -12,7 +12,7 @@ def config_path():
     raise ValueError(
         'Config not found at ~/.nasa_spokesig_api.conf or /etc/nasa_spokesig_api.conf')
     
-@lru_cache
+@lru_cache()
 def read_config():
     """Load the config into a ConfigParser, which can be queried with get(), items(), etc."""
     parser = ConfigParser()
