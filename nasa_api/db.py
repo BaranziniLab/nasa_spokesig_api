@@ -50,6 +50,6 @@ class TableGetter(object):
             return meta().tables[key]
         return Table(key, meta(), autoload=True)
     
-# so you can refer to tables as T.<table name>
+# Now, tables can be accessed as T.<table name>
 T = TableGetter()
 
