@@ -18,7 +18,10 @@ class columnMapping(Base):
     
 
 '''
-46 tables are needed, where each table corresponds to a study id. To automate the process of creation of these 46 tables, following section of the code creates Classes (that maps to study_id tables) in a dynamical fashion. Hence, this automates the creation of the 46 study_id tables. 
+46 tables are needed, where each table corresponds to a study id. 
+To automate the process of creation of these 46 tables, 
+following section of the code creates Classes (that maps to study_id tables) 
+in a dynamical fashion. Hence, this automates the creation of the 46 study_id tables. 
 '''
 df = pd.read_csv(column_mapping_file, sep='\t')
 study_ids = list(df.study_id.unique())
