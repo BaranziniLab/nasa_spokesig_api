@@ -12,8 +12,8 @@ column_mapping_file = c['column_mapping_file']
 
 def main():
     if not os.path.exists(column_mapping_file):
-        print('Column mapping file does not exist. Creating it now ...')
-        study_files = list(filter(None, list(map(lambda x:x if '.tsv' in x else None, os.listdir(gene_spokesig_path)))))
+        print('Column mapping file does not exist. Creating it now ...')        
+        study_files = get_gene_spokesig_study_files()
         study_ids = list(filter(None, list(map(lambda x:x.split('_rank_by_type')[0], study_files))))
         print('Parsing columns of each study file ...')
         study_id_with_columns_list = []
@@ -35,5 +35,8 @@ def main():
     else:
         print('Column mapping file already exists.')
 
+def get_gene_spokesig_study_files():
+    return list(filter(None, list(map(lambda x:x if 'GLDS' in x else None, os.listdir(gene_spokesig_path)))))
+    
 if __name__ == "__main__":
     main()

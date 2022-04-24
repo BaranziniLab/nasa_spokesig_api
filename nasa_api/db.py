@@ -39,17 +39,17 @@ def meta():
     return MetaData(bind=engine())
 
 
-class TableGetter(object):
-    def __getattr__(self, key):
-        if key in meta().tables:
-            return meta().tables[key]
-        return Table(key, meta(), autoload=True)
+# class TableGetter(object):
+#     def __getattr__(self, key):
+#         if key in meta().tables:
+#             return meta().tables[key]
+#         return Table(key, meta(), autoload=True)
     
-    def __getitem__(self, key):
-        if key in meta().tables:
-            return meta().tables[key]
-        return Table(key, meta(), autoload=True)
+#     def __getitem__(self, key):
+#         if key in meta().tables:
+#             return meta().tables[key]
+#         return Table(key, meta(), autoload=True)
     
-# Now, tables can be accessed as T.<table name>
-T = TableGetter()
+# # Now, tables can be accessed as T.<table name>
+# T = TableGetter()
 

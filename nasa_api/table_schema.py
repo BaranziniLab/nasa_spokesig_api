@@ -23,12 +23,12 @@ To automate the process of creation of these 46 tables,
 following section of the code creates Classes (that maps to study_id tables) 
 in a dynamical fashion. Hence, this automates the creation of the 46 study_id tables. 
 '''
-df = pd.read_csv(column_mapping_file, sep='\t')
-study_ids = list(df.study_id.unique())
+column_mapping_df = pd.read_csv(column_mapping_file, sep='\t')
+study_ids = list(column_mapping_df.study_id.unique())
 
 var_holder = {}
 for i in range(len(study_ids)):
-    study_id_df = df[df.study_id == study_ids[i]]
+    study_id_df = column_mapping_df[column_mapping_df.study_id == study_ids[i]]
     attribute_dict = {}
     attribute_dict['__tablename__'] = study_ids[i]
     attribute_dict['id'] = Column(Integer, primary_key=True, autoincrement=True)
