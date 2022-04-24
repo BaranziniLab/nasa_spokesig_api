@@ -17,6 +17,15 @@ class columnMapping(Base):
     column_name_index = Column(String(15), nullable=False)
     
 
+class nodeMapping(Base):
+    __tablename__ = 'node_mapping'
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    Node = Column(String(20), nullable=False)
+    Node_Name = Column(Text, nullable=False)
+    Node_Type = Column(String(20), nullable=False)
+    
+
 '''
 46 tables are needed, where each table corresponds to a study id. 
 To automate the process of creation of these 46 tables, 

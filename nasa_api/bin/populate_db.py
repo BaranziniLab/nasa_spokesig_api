@@ -15,6 +15,12 @@ def main():
     print('Populated {} table!'.format(columnMapping.__tablename__))
     print(' ')
     
+    print('Populating {} table ...'.format(nodeMapping.__tablename__))
+    node_mapping_data_df = get_node_mapping_data()
+    fill_table(Table(nodeMapping.__tablename__, db.meta(), autoload=True), node_mapping_data_df.to_dict(orient='records'))
+    print('Populated {} table!'.format(nodeMapping.__tablename__))
+    print(' ')
+    
     study_files = get_gene_spokesig_study_files()
     for index, study_id in enumerate(study_ids):    
         study_id_data_to_populate_df = get_study_id_data_to_populate(study_id)
@@ -24,6 +30,11 @@ def main():
         print(' ')
 
 
+def get_node_mapping_data():
+    node_mapping_data_df = pd.read_csv(os.path.join(gene_spokesig_path, 'GLDS-87_rank_by_type_0_1.tsv'), sep='\t')
+    return node_mapping_data_df[['Node', 'Node_Name', 'Node_Type']]
+
+        
 def get_study_id_data_to_populate(study_id):
     selected_study_file = study_files[np.where(list(map(lambda x:study_id == x.split('_')[0] in x, study_files)))[0][0]]
     print('Reading data of study id : {}'.format(study_id))
