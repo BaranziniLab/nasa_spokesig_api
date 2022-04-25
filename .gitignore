@@ -1,6 +1,7 @@
 *.ipynb
 *.csv
 *.tsv
+*.txt
 nasa_api/__pycache__
 nasa_api/bin/__pycache__
 venv/
