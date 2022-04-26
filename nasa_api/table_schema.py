@@ -39,11 +39,13 @@ var_holder = {}
 for i in range(len(study_ids)):
     study_id_df = column_mapping_df[column_mapping_df.study_id == study_ids[i]]
     attribute_dict = {}
-    attribute_dict['__tablename__'] = study_ids[i]
+    table_name = '_'.join(study_ids[i].split('-'))
+    attribute_dict['__tablename__'] = table_name
     attribute_dict['id'] = Column(Integer, primary_key=True, autoincrement=True)
     for index,row in study_id_df.iterrows():
         attribute_dict[row['column_name_index']] = Column(Integer, nullable=False)    
-    var_holder['studyID' + str(i+1)] = type('studyID' + str(i+1), (Base,), attribute_dict)
+#     var_holder['studyID' + str(i+1)] = type('studyID' + str(i+1), (Base,), attribute_dict)
+    var_holder[table_name] = type(table_name, (Base,), attribute_dict)
 
 locals().update(var_holder)
     

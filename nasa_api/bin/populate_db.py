@@ -24,9 +24,10 @@ def main():
     study_files = get_gene_spokesig_study_files()
     for index, study_id in enumerate(study_ids):    
         study_id_data_to_populate_df = get_study_id_data_to_populate(study_id)
-        print('Populating table : {} ({}/{}) ...'.format(study_id, index+1, len(study_ids)))
-        fill_table(Table(study_id, db.meta(), autoload=True), study_id_data_to_populate_df.to_dict(orient='records'))
-        print('Populated table {} ({}/{})!'.format(study_id, index+1, len(study_ids)))
+        table_name = '_'.join(study_id.split('-'))
+        print('Populating table : {} ({}/{}) ...'.format(table_name, index+1, len(study_ids)))
+        fill_table(Table(table_name, db.meta(), autoload=True), study_id_data_to_populate_df.to_dict(orient='records'))
+        print('Populated table {} ({}/{})!'.format(table_name, index+1, len(study_ids)))
         print(' ')
 
 
