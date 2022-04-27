@@ -4,4 +4,5 @@
 *.txt
 nasa_api/__pycache__
 nasa_api/bin/__pycache__
+nasa_api/backend/__pycache__
 venv/
