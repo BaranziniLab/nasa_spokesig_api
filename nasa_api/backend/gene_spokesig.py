@@ -1,12 +1,13 @@
 from nasa_api.flask_sql_table_schema import table_map, column_mapping
-from nasa_api import flask_db
+from nasa_api import flask_db, problem_response  
 
-def get_gene_spokesig(study_id, col, page, per_page):
+def get_gene_spokesig(study_id, col, page, per_page):    
     table_name = '_'.join(study_id.split('-'))
     results = flask_db.session.query(getattr(table_map[table_name], col)).paginate(page=page, per_page=per_page)
-    data = []
-    for result in results.items:
-        data.append(result[0])
+    data = list(map(lambda x:x[0],results.items))
+#     data = []
+#     for result in results.items:
+#         data.append(result[0])
     meta = {
         'page':results.page,
         'pages':results.pages,

@@ -1,12 +1,12 @@
-from flask import make_response
-from flask import jsonify
 from webargs.flaskparser import use_kwargs
 from webargs.fields import Str, Int
 from webargs import validate
 from nasa_api import *
 from nasa_api.config import read_config
+from nasa_api.table_schema import study_ids
 from nasa_api.backend.column_map import get_column_map
 from nasa_api.backend.gene_spokesig import get_gene_spokesig 
+from nasa_api.flask_sql_table_schema import column_mapping
 
 
 
@@ -28,7 +28,15 @@ from nasa_api.backend.gene_spokesig import get_gene_spokesig
 )
 def column_map(study_id, page=1, per_page=10):
     if not "GLDS-" in study_id:
-        return make_response("Bad request. study_id is not given in the correct format. study_id starts with 'GLDS-'", 400)
+        return problem_response(
+            message="study_id is not given in the correct format.", 
+            details = "study_id starts with 'GLDS-'"            
+        )
+    if not study_id in study_ids:
+        return problem_response(
+            message="Given study_id is invalid"
+        )
+
     return jsonify(
         get_column_map(            
             study_id=study_id,
@@ -62,7 +70,21 @@ def column_map(study_id, page=1, per_page=10):
 )
 def gene_spokesig(study_id, col, page=1, per_page=100):
     if not "GLDS-" in study_id:
-        return make_response("Bad request. study_id is not given in the correct format. study_id starts with 'GLDS-'", 400)
+        return problem_response(
+            message="study_id is not given in the correct format.",
+            details = "study_id starts with 'GLDS-'"
+        )         
+    if not study_id in study_ids:
+        return problem_response(
+            message="Given study_id is invalid"
+        )
+    col_list = get_columns(study_id)
+    if not col in col_list:
+        return problem_response(
+            message="Given column is invalid for the study_id %s"%study_id,
+            details="There are only %d columns for this study_id"%len(col_list)
+        )        
+    
     return jsonify(
         get_gene_spokesig(
             study_id=study_id,
@@ -72,12 +94,15 @@ def gene_spokesig(study_id, col, page=1, per_page=100):
         )
     )
         
+
+
     
-            
-        
-            
-        
-    
+def get_columns(study_id):
+    column_results = column_mapping.query.filter_by(study_id=study_id).all()
+    col_list = []
+    for item in column_results:
+        col_list.append(item.column_name_index)
+    return col_list
     
         
 if __name__=="__main__":
