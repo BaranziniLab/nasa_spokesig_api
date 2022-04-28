@@ -1,0 +1,209 @@
+openapi: 3.0.0
+
+info:
+  title: NASA SPOKEsig API
+  description: API that serves gene SPOKEsigs of GLDS studies
+  contact:
+    name: Baranzini Lab
+    url: https://baranzinilab.ucsf.edu/
+  version: 1.0.0
+  
+servers: 
+  - url: http://localhost:8889/
+  
+paths:
+  /nasa_api/v1/column_map:
+    description: This endpoint returns columns assigned to a specific GLDS study ID and maps those columns to names that API understand.
+    get:
+      description: Endpoint to fetch columns of a given study_id 
+      parameters: 
+        - in: query
+          name: study_id
+          required: true
+          schema:
+            type: string
+            description: ID of the study
+            example: GLDS-47
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+            description: Page number 
+            example: 1
+            default: 1
+        - in: query
+          name: per_page
+          required: false
+          schema:
+            type: integer
+            description: Number of contents in a page
+            example: 10
+            default: 10
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/column_map'
+  /nasa_api/v1/gene_spokesig:
+    description: This endpoint returns gene SPOKEsigs corresponding to a study ID and a column in the table of that study ID.
+    get:
+      description: Endpoint to fetch gene SPOKEsigs of a given study ID and column name
+      parameters: 
+        - in: query
+          name: study_id
+          required: true
+          schema:
+            type: string
+            description: ID of the study
+            example: GLDS-47
+        - in: query
+          name: col
+          required: true
+          schema:
+            type: string
+            description: name of the column
+            example: col1
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+            description: Page number
+            example: 1
+            default: 1
+        - in: query
+          name: per_page
+          required: false
+          schema:
+            type: integer
+            description: Number of contents in a page
+            example: 10
+            default: 100
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/gene_spokesig'
+            
+components:
+  schemas:
+    column_map:
+      type: object
+      properties:
+        study_id:
+          type: string
+          description: name of the study ID
+          example: GLDS-47
+        column_info:
+          type: array
+          description: information about the genelab columns and their API mappings
+          items:
+            properties:
+              genelab_column_name:
+                type: string
+                description: column name given in genelab table
+                example: Log2fc_(BASAL)v(Space Flight)
+              api_column_name:
+                type: string
+                description: column name that API understands
+                example: col1
+        meta:
+          type: object
+          properties:
+            has_next:
+              type: boolean
+              description: status for if there exists a next page
+              example: false
+            has_prev:
+              type: boolean
+              description: status for if there exists a previous page
+              example: false
+            next_page:
+              type: integer
+              description: shows next page number
+              example: null
+            page:
+              type: integer
+              description: shows current page number
+              example: 1
+            pages:
+              type: integer
+              description: shows total page numbers
+              example: 1
+            prev_page:
+              type: integer
+              description: shows previous page number
+              example: null
+            total_count:
+              type: integer
+              description: shows total number of contents
+              example: 6
+    gene_spokesig:
+      type: object
+      properties:
+        study_id:
+          type: string
+          description: name of the study ID
+          example: GLDS-47
+        genelab_column_name:
+          type: string
+          description: column name given in genelab table
+          example: Log2fc_(BASAL)v(Space Flight)
+        api_column_name:
+          type: string
+          description: column name that API understands
+          example: col1
+        gene_spokesig:
+          type: array
+          description: gene SPOKEsig corresponding to the study ID and column name
+          items:
+            type: integer
+            description: SPOKEsig value of a node. This is rank normalized based on node type
+            example: [1135, 3898, 4070, 3261, 8206, 11607, 11930, 17268, 3764, 1685]
+        meta:
+          type: object
+          description: meta information about the content
+          properties:
+            has_next:
+              type: boolean
+              description: status for if there exists a next page
+              example: true
+            has_prev:
+              type: boolean
+              description: status for if there exists a previous page
+              example: false
+            next_page:
+              type: integer
+              description: shows next page number
+              example: 2
+            page:
+              type: integer
+              description: shows current page number
+              example: 1
+            pages:
+              type: integer
+              description: shows total page numbers
+              example: 38930
+            prev_page:
+              type: integer
+              description: shows previous page number
+              example: null
+            total_count:
+              type: integer
+              description: shows total number of contents
+              example: 389297
+            
+          
+          
+          
+          
+          
+        
+        
+      
+      
