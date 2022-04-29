@@ -9,7 +9,7 @@ info:
   version: 1.0.0
   
 servers: 
-  - url: http://localhost:8889/
+  - url: http://localhost:8890/
   
 paths:
   /nasa_api/v1/column_map:

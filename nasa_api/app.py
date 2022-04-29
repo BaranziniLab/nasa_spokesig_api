@@ -1,14 +1,23 @@
 from webargs.flaskparser import use_kwargs
 from webargs.fields import Str, Int
 from webargs import validate
+import nasa_api
 from nasa_api import *
 from nasa_api.config import read_config
 from nasa_api.table_schema import study_ids
+from nasa_api.flask_sql_table_schema import column_mapping
 from nasa_api.backend.column_map import get_column_map
 from nasa_api.backend.gene_spokesig import get_gene_spokesig 
-from nasa_api.flask_sql_table_schema import column_mapping
+from nasa_api.backend.node_map import get_node_map
 
 
+@app.route('/nasa_api/v1', methods=['GET'])
+def home():
+#     endpoints = sorted(r.rule for r in app.url_map.iter_rules())
+    return jsonify(
+        api_name=APP_NAME,
+        version=nasa_api.__version__
+    )
 
 @app.route("/nasa_api/v1/column_map", methods=['GET'])
 @use_kwargs(
@@ -45,9 +54,7 @@ def column_map(study_id, page=1, per_page=10):
         )
     )
                     
-
     
-
 @app.route("/nasa_api/v1/gene_spokesig", methods=['GET'])
 @use_kwargs(
     dict(
@@ -95,6 +102,26 @@ def gene_spokesig(study_id, col, page=1, per_page=100):
     )
         
 
+@app.route("/nasa_api/v1/node_map", methods=['GET'])
+@use_kwargs(
+    dict(        
+        page=Int(
+            data_key="page"
+        ),
+        per_page=Int(
+            data_key="per_page"
+            )
+    ),
+    location="query"
+)
+def node_map(page=1, per_page=100): 
+    return jsonify(
+        get_node_map(
+            page=page,
+            per_page=per_page
+        )
+    )
+        
 
     
 def get_columns(study_id):
