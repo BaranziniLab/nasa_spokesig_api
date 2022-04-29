@@ -11,7 +11,7 @@ from nasa_api.backend.gene_spokesig import get_gene_spokesig
 from nasa_api.backend.node_map import get_node_map
 
 
-@app.route('/nasa_api/v1', methods=['GET'])
+@app.route('/nasa_api', methods=['GET'])
 def home():
 #     endpoints = sorted(r.rule for r in app.url_map.iter_rules())
     return jsonify(
@@ -133,7 +133,7 @@ def get_columns(study_id):
     
         
 if __name__=="__main__":
-        app.run(**dict(read_config().items('flask')))
+    app.run(**dict(read_config().items('flask')))
         
 
                     
