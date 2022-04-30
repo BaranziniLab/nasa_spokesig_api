@@ -9,9 +9,21 @@ info:
   version: 1.0.0
   
 servers: 
-  - url: http://localhost:8890/
+  - url: http://localhost:8890
   
 paths:
+  /nasa_api:
+    description: Root endpoint
+    get:
+      description: Root endpoint of the API
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/nasa_api'
+              
   /nasa_api/v1/column_map:
     description: This endpoint returns columns assigned to a specific GLDS study ID and maps those columns to names that API understand.
     get:
@@ -47,6 +59,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/column_map'
+        422:
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/exception_schema'
+                
   /nasa_api/v1/gene_spokesig:
     description: This endpoint returns gene SPOKEsigs corresponding to a study ID and a column in the table of that study ID.
     get:
@@ -89,9 +108,69 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/gene_spokesig'
-            
+        422:
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/exception_schema'
+  /nasa_api/v1/node_map:
+    description: This endpoint returns the information about each node in the gene SPOKEsig
+    get:
+      description: Endpoint to fetch the information about each node in the gene SPOKEsig
+      parameters: 
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+            description: Page number
+            example: 1
+            default: 1
+        - in: query
+          name: per_page
+          required: false
+          schema:
+            type: integer
+            description: Number of contents in a page
+            example: 10
+            default: 100
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/node_map'
+
 components:
   schemas:
+    exception_schema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Gives information about the exception raised
+          example: "Given study_id is invalid"
+        status_code:
+          type: integer
+          description: HTTP status code
+          example: 422
+        details:
+          type: string
+          description: More details about the exception raised. This is optional.
+          example: "study_id starts with 'GLDS-'"
+    nasa_api:
+      type: object
+      properties:
+        api_name:
+          type: string
+          description: name of the API
+          example: nasa_spokesig_api
+        version:
+          type: string
+          description: version of the API
+          example: 1.0.0
     column_map:
       type: object
       properties:
@@ -197,6 +276,63 @@ components:
               type: integer
               description: shows total number of contents
               example: 389297
+    node_map:
+      type: object
+      properties:
+        node:
+          type: array
+          description: array of node objects
+          items:
+            properties:
+              node_id:
+                type: string
+                description: Identifier of a node in SPOKE knowledge graph
+                example: DOID:14330
+              node_name:
+                type: string
+                description: Name of a node in SPOKE knowledge graph
+                example: Parkinson's disease
+              node_type:
+                type: string
+                description: Label of a node in SPOKE knowledge graph
+                example: Disease
+              spokesig_index:
+                type: integer
+                description: Index of a node in gene SPOKEsig vector. Note that Index starts with 0. Hence, the first index = 0)
+                example: 30
+        meta:
+          type: object
+          description: meta information about the content
+          properties:
+            has_next:
+              type: boolean
+              description: status for if there exists a next page
+              example: true
+            has_prev:
+              type: boolean
+              description: status for if there exists a previous page
+              example: false
+            next_page:
+              type: integer
+              description: shows next page number
+              example: 2
+            page:
+              type: integer
+              description: shows current page number
+              example: 1
+            pages:
+              type: integer
+              description: shows total page numbers
+              example: 38930
+            prev_page:
+              type: integer
+              description: shows previous page number
+              example: null
+            total_count:
+              type: integer
+              description: shows total number of contents
+              example: 389297
+          
             
           
           
