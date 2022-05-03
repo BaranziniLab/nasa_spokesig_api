@@ -12,3 +12,4 @@ database=<mysql database name>
 
 [data]
 gene_spokesig_path=/path/to/genespokesig/tsv/files
+column_mapping_file=/path/to/column/mapping/tsv/file
