@@ -27,6 +27,8 @@ Give MySQL credentials such as username and password. Provide database name as *
 
 Provide data paths to the *data* section of the config file.
 
+Note: *column_mapping_file* should be a .tsv file
+
 Then:
 
 * Save it as ".nasa_spokesig_api.conf" to the home folder (~)
