@@ -27,7 +27,7 @@ Give MySQL credentials such as username and password. Provide database name as *
 
 Provide data paths to the *data* section of the config file.
 
-Note: *column_mapping_file* in the *data* section of the config file should be named as a **.tsv** file. Its okay even if you don't have this file. This will be generated later.
+Note: *column_mapping_file* in the *data* section of the config file should be named as a **.tsv** file. Its okay even if you don't have this file. This will be generated later. Now, just give a name (along with the path) that you want this file to be called.
 
 Then:
 
